@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("c817b014-3c9f-4e20-aac0-31336060d14e")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Synapse.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+111db790c84a6cdbeffb48061de91a45816e7461")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f77c016b87a7f7b45baca4fd7411c839f6fbe470")]
 [assembly: System.Reflection.AssemblyProductAttribute("Synapse.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Synapse.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

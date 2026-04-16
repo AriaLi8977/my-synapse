@@ -169,3 +169,11 @@
 /Users/ariali/Synapse/Synapse.Api/bin/Debug/net8.0/BCrypt.Net-Next.dll
 /Users/ariali/Synapse/Synapse.Api/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/ariali/Synapse/Synapse.Api/obj/Debug/net8.0/Synapse.Api.sourcelink.json
+/Users/ariali/Synapse/Synapse.Api/bin/Debug/net8.0/Azure.Storage.Blobs.dll
+/Users/ariali/Synapse/Synapse.Api/bin/Debug/net8.0/Azure.Storage.Common.dll
+/Users/ariali/Synapse/Synapse.Api/bin/Debug/net8.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/ariali/Synapse/Synapse.Api/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/ariali/Synapse/Synapse.Api/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/ariali/Synapse/Synapse.Api/bin/Debug/net8.0/Microsoft.Extensions.Primitives.dll
+/Users/ariali/Synapse/Synapse.Api/bin/Debug/net8.0/System.ClientModel.dll
+/Users/ariali/Synapse/Synapse.Api/bin/Debug/net8.0/System.IO.Hashing.dll

@@ -1,6 +1,7 @@
 using Synapse.Application.Interfaces;
 using Synapse.Application.Services;
 using Synapse.Infrastructure.Data;
+using Synapse.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +16,7 @@ builder.Services.AddScoped<INoteService, NoteService>();
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IBlobService, BlobService>();
 
 // Add Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -42,7 +44,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 var app = builder.Build();
 
 // Configure pipeline
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
+if(true) //for cloud
 {
     app.UseSwagger();
     app.UseSwaggerUI();

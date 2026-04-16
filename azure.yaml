@@ -5,7 +5,7 @@ metadata:
     template: azd-init@1.23.15
 services:
     synapse-api:
-        project: ./Synapse.Api
+        project: Synapse.Api
         host: containerapp
         language: dotnet
 resources:
