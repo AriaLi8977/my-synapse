@@ -2,3 +2,6 @@
 Synapse.Api/appsettings.Development.json
 **/bin/
 **/obj/
+*.user
+*.suo
+.env
