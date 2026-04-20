@@ -1,2 +1,4 @@
 .azure
-appsettings.Development.json
+Synapse.Api/appsettings.Development.json
+**/bin/
+**/obj/
