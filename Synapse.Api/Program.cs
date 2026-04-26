@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using DotNetEnv;
+using Synapse.Infrastructure.Settings;
 
 Env.Load("../.env");
 
@@ -29,6 +30,9 @@ var jwtSettings = new JwtSettings();
 builder.Configuration.Bind("Jwt", jwtSettings);
 builder.Services.AddSingleton(jwtSettings);
 
+var ServiceBusSettingsSection = builder.Configuration.GetSection("ServiceBus");
+builder.Services.Configure<ServiceBusSettings>(ServiceBusSettingsSection);
+
 // Add Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -40,7 +44,7 @@ builder.Services.AddSwaggerGen(options =>
     Scheme = "bearer",
     BearerFormat = "JWT",
     In = ParameterLocation.Header,
-    Description = "Enter: Bearer {your token}"
+    Description = "Enter: {your token}"
 });
 
     options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
