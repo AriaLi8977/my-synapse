@@ -23,6 +23,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBlobService, BlobService>();
 builder.Services.AddScoped<IMessageBus, ServiceBus>();
+builder.Service.AddScoped<IAiService, AiService>();
 
 builder.Configuration.AddEnvironmentVariables();
 
@@ -63,9 +64,15 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+Console.WriteLine("Connection String:");
+Console.WriteLine(
+    builder.Configuration.GetConnectionString("DefaultConnection"));
+
 // Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=synapse.db"));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
+//     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=synapse.db"));
 
 var key = jwtSettings.Key;
 // Add JWT Authentication

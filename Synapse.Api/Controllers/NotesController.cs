@@ -17,8 +17,9 @@ public class NotesController : ControllerBase
     {
         _noteService = noteService;
     }
+
     [Authorize]
-    [HttpGet]
+    [HttpGet("GetNotes")]
     public async Task<IActionResult> Get()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -28,7 +29,7 @@ public class NotesController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost]
+    [HttpPost("CreateNotes")]
     public async Task<IActionResult> Create(CreateNoteDto dto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
