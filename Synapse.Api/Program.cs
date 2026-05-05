@@ -24,6 +24,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBlobService, BlobService>();
 builder.Services.AddScoped<IMessageBus, ServiceBus>();
 builder.Service.AddScoped<IAiService, AiService>();
+builder.Service.AddScoped<INotificationService, SignalRNotificationService>();
 
 builder.Configuration.AddEnvironmentVariables();
 
@@ -90,6 +91,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure pipeline
@@ -106,6 +109,8 @@ app.Map("/error", (HttpContext httpContext) =>
     var exception = httpContext.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>()?.Error;
     return Results.Problem(detail: exception?.Message);
 });
+
+app.MapHub<NoteHub>("/hubs/notes");
 
 app.UseHttpsRedirection();
 
