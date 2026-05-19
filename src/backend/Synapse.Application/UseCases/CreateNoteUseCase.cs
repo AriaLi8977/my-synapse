@@ -1,4 +1,5 @@
 using Synapse.Application.Interfaces;
+using Synapse.Application.DTOs;
 using Synapse.Domain.Entities;
 using Synapse.Domain.Enums;
 
@@ -26,10 +27,10 @@ public class CreateNoteUseCase
             Status = NoteStatus.Pending
         };
         await _noteRepo.AddAsync(note);
-        await _mesBus.PublishAsync(new
+        await _mesBus.PublishAsync(new NoteMessageDto
         {
             NoteId = note.Id,
-            UserId = userId
+            Content = note.Content
         });
         return note.Id;
     }

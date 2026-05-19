@@ -13,7 +13,13 @@ export function NoteCard({ note }: Props) {
           </h3>
   
           <span className="text-sm text-gray-500">
+          <div>
             {note.status}
+            {note.status === "Pending" && "⏳ Pending"}
+            {note.status === "Processing" && "⏳ Processing"}
+            {note.status === "Completed" && "✅ Completed"}
+            {note.status === "Failed" && "❌ Failed"}
+            </div>
           </span>
         </div>
   

@@ -30,7 +30,8 @@ public class NoteService : INoteService
             UserId = userId
         };
         await _noteRepository.AddAsync(note);
-        await _messageBus.PublishAsync(new { note.Id, note.Content });
+        Console.WriteLine($"Publishing content: {note.Content}");
+        await _messageBus.PublishAsync(new NoteMessageDto { NoteId = note.Id, Content = note.Content });
         return note.Id;
     }
 

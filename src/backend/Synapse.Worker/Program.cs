@@ -18,6 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddSignalR();
+builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<INotificationService, SignalRNotificationService>();
 
@@ -28,7 +29,6 @@ builder.Services.AddSingleton(sp =>
 {
     var configuration = sp.GetRequiredService<IConfiguration>();
     var connectionString = configuration["ServiceBus:ConnectionString"];
-
     return new ServiceBusClient(connectionString);
 });
 

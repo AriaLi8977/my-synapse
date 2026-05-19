@@ -69,10 +69,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-Console.WriteLine("Connection String:");
-Console.WriteLine(
-    builder.Configuration.GetConnectionString("DefaultConnection"));
-
 // Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(

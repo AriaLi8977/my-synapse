@@ -33,6 +33,7 @@ public class ServiceBus : IMessageBus
         catch (Exception ex)
         {
             Console.WriteLine($"ServiceBus error: {ex.Message}");
+            throw;
         }
     }
 }

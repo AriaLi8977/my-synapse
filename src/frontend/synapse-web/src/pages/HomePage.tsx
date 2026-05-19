@@ -37,7 +37,7 @@ export function HomePage({onLogout}: Props){
                     note.id === data.noteId ? {...note, status: "Completed", summary: data.summary} : note)
             )
         })
-    });
+    }, []);
 
     const handleCreate = async (content: string) => {
         const newNote = await createNote(content);
