@@ -17,8 +17,13 @@ public class DeleteNoteUseCase
     public async Task<bool> ExecuteAsync(Guid id, Guid userId)
     {
         var note = await _noteRep.GetByIdAsync(id);
-        if (note == null || note.UserId != userId)
-            return false;
+        if (note == null)
+        {
+            throw new Exception("Note not found");
+        }else if (note.UserId != userId)
+        {
+            throw new Exception("Access denied");
+        }
         await _noteRep.DeleteAsync(id);
         return true;
     }

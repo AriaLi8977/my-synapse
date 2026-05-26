@@ -29,4 +29,18 @@ public class CreateNoteCommandHandlerTests
         _messageBusMock.Verify(x => x.PublishAsync(It.Is<NoteMessageDto>(m => m.NoteId == result.Id && m.Content == content)), Times.Once);
 
     }
+
+    [Fact]
+    public async Task Should_Reject_Empty_Content()
+    {
+        // Arrange
+        var content = "";
+        var userId = Guid.NewGuid();
+
+        // Act
+        Func<Task> act = () => _useCase.ExecuteAsync(content, userId);
+
+        // Assert
+        await act.Should().ThrowAsync<Exception>();
+    }
 }

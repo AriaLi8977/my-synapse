@@ -26,6 +26,12 @@ public class CreateNoteUseCase
             UserId = userId,
             Status = NoteStatus.Pending
         };
+        if (content == null || content.Length < 10)
+        {
+            //note.Status = NoteStatus.Error;
+            throw new Exception("Content must be at least 10 characters long");
+        }
+
         await _noteRepo.AddAsync(note);
         await _mesBus.PublishAsync(new NoteMessageDto
         {

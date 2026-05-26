@@ -93,14 +93,13 @@ export function NoteDetailPage() {
         <div className="min-h-screen bg-gray-100">
             <div className="max-w-5xl mx-auto px-6 py-8">
     
-                {/* Top Header */}
                 <div className="
                     flex items-center justify-between
                     border-b border-gray-200
-                    pb-5 mb-8
+                    pb-5 mb-6
                 ">
     
-                    {/* Left - Back */}
+                    {/* Left - Back Button */}
                     <div className="w-24">
                         <Link
                             to="/"
@@ -134,7 +133,7 @@ export function NoteDetailPage() {
                         </Link>
                     </div>
     
-                    {/* Center - Title */}
+                    {/* Middle - Page Title */}
                     <h1 className="
                         text-xl font-semibold
                         text-gray-900
@@ -142,7 +141,7 @@ export function NoteDetailPage() {
                         Note Detail
                     </h1>
     
-                    {/* Right - Delete */}
+                    {/* Right - Delete Button */}
                     <div className="w-24 flex justify-end">
                         <button
                             onClick={handleDelete}
@@ -176,7 +175,6 @@ export function NoteDetailPage() {
                     </div>
                 </div>
     
-                {/* Main Content */}
                 <div className="
                     bg-white
                     border border-gray-200
@@ -184,117 +182,81 @@ export function NoteDetailPage() {
                     p-8
                 ">
     
-                    {(() => {
-                        const statusMap: Record<number, { text: string; color: string }> = {
-                            0: {
-                                text: "Pending",
-                                color: "bg-yellow-100 text-yellow-800"
-                            },
-                            1: {
-                                text: "Processing",
-                                color: "bg-blue-100 text-blue-800"
-                            },
-                            2: {
-                                text: "Completed",
-                                color: "bg-green-100 text-green-800"
-                            },
-                            3: {
-                                text: "Failed",
-                                color: "bg-red-100 text-red-800"
-                            }
-                        };
+                    <div className="border-b border-gray-200 pb-6">
     
-                        const statusInfo =
-                            statusMap[note.status] || {
-                                text: "Unknown",
-                                color: "bg-gray-100 text-gray-800"
-                            };
+                        <h2 className="
+                            text-3xl font-semibold
+                            text-gray-900
+                            break-words
+                        ">
+                            {note.title || "Untitled Note"}
+                        </h2>
     
-                        return (
-                            <>
-                                {/* Note Header */}
-                                <div className="border-b border-gray-200 pb-6">
+                        <div className="
+                            mt-4
+                            flex items-center gap-3
+                            text-sm text-gray-500
+                        ">
+                            <span>
+                                Created{" "}
+                                {new Date(note.createdAt).toLocaleString()}
+                            </span>
     
-                                    <h2 className="
-                                        text-3xl font-semibold
-                                        text-gray-900
-                                        break-words
-                                    ">
-                                        {note.title || "Untitled Note"}
-                                    </h2>
+                            <span className={`
+                                inline-flex items-center
+                                rounded-full
+                                px-3 py-1
+                                text-xs font-medium
+                                ${statusInfo.color}
+                            `}>
+                                {statusInfo.text}
+                            </span>
+                        </div>
+                    </div>
     
-                                    <div className="
-                                        mt-4
-                                        flex items-center gap-3
-                                        text-sm text-gray-500
-                                    ">
-                                        <span>
-                                            Created{" "}
-                                            {new Date(note.createdAt).toLocaleString()}
-                                        </span>
+                    <div className="mt-8">
     
-                                        <span
-                                            className={`
-                                                inline-flex items-center
-                                                rounded-full
-                                                px-3 py-1
-                                                text-xs font-medium
-                                                ${statusInfo.color}
-                                            `}
-                                        >
-                                            {statusInfo.text}
-                                        </span>
-                                    </div>
-                                </div>
+                        <h2 className="
+                            text-sm font-semibold
+                            text-gray-500 uppercase
+                            tracking-wide mb-4
+                        ">
+                            Content
+                        </h2>
     
-                                {/* Content */}
-                                <div className="mt-8">
+                        <div className="
+                            text-gray-800
+                            whitespace-pre-wrap
+                            leading-7
+                        ">
+                            {note.content}
+                        </div>
+                    </div>
     
-                                    <h3 className="
-                                        text-sm font-semibold
-                                        text-gray-500 uppercase
-                                        tracking-wide mb-4
-                                    ">
-                                        Content
-                                    </h3>
+                    {note.summary && (
+                        <div className="mt-10">
     
-                                    <div className="
-                                        text-gray-800
-                                        whitespace-pre-wrap
-                                        leading-7
-                                    ">
-                                        {note.content}
-                                    </div>
-                                </div>
+                            <h2 className="
+                                text-sm font-semibold
+                                text-gray-500 uppercase
+                                tracking-wide mb-4
+                            ">
+                                AI Summary
+                            </h2>
     
-                                {/* AI Summary */}
-                                {note.summary && (
-                                    <div className="mt-10">
-    
-                                        <h3 className="
-                                            text-sm font-semibold
-                                            text-gray-500 uppercase
-                                            tracking-wide mb-4
-                                        ">
-                                            AI Summary
-                                        </h3>
-    
-                                        <div className="
-                                            rounded-lg
-                                            border border-gray-200
-                                            bg-gray-50
-                                            p-6
-                                            text-gray-700
-                                            whitespace-pre-wrap
-                                            leading-7
-                                        ">
-                                            {note.summary}
-                                        </div>
-                                    </div>
-                                )}
-                            </>
-                        );
-                    })()}
+                            <div className="
+                                rounded-lg
+                                border border-gray-200
+                                bg-gray-50
+                                p-6
+                                text-gray-700
+                                whitespace-pre-wrap
+                                leading-7
+                            ">
+                                {note.summary}
+                            </div>
+                        </div>
+                    )}
     
                 </div>
             </div>
