@@ -1,52 +1,59 @@
 # Synapse
 
-AI-powered real-time note platform built with .NET, React, Azure Service Bus, SignalR, and JWT authentication.
+A real-time, AI-powered note-taking system that transforms user notes into structured summaries using a distributed, event-driven architecture with background workers, message queues, and live UI updates.
+
 
 ![HomePage](./docs/screenshots/homepage.png)
 
 Event-driven note management system with AI-powered summarization, built using .NET and Azure.
 
-## Features
+## What This Project Demonstrates
 
-- JWT authentication
-- Real-time note updates with SignalR
-- AI-generated summaries and titles
-- Background processing with worker service
-- Queue-based architecture using Azure Service Bus
-- Protected API endpoints
-- React frontend with Tailwind CSS
-- Dockerized development environment
+Synapse is designed as a production-style distributed system showcasing:
+
+- Event-driven backend architecture
+- Asynchronous background processing (worker service)
+- Real-time frontend updates (SignalR)
+- Message queue decoupling (Azure Service Bus)
+- Secure authentication (JWT)
+- Full Dockerized local environment
+
+---
+
+## Key Highlights
+
+- AI-powered note summarization and title generation
+- Real-time UI updates via SignalR
+- Event-driven architecture using Azure Service Bus
+- Background worker for async processing
+- JWT authentication with protected API routes
+- Fully Dockerized (one-command startup)
+- Clean separation between API, worker, and frontend
+
+---
 
 ## Architecture
-
-```text
-	┌─────────────┐
-	│ React Frontend
-	└──────┬──────┘
-		│ HTTPS + JWT
-		▼
-	┌─────────────┐
-	│ .NET API
-	│ Controllers
-	│ SignalR Hub
-	└──────┬──────┘
-		│ Queue Message
-		▼
-	┌─────────────┐
-	│ Azure Service Bus
-	└──────┬──────┘
-		▼
-	┌─────────────┐
-	│ Worker Service
-	│ AI Processing
-	└──────┬──────┘
-		│ SignalR Update
-		▼
-	┌─────────────┐
-	│ Frontend Live Update
-	└─────────────┘
-
-
+```User action triggers an event-driven pipeline:
+	User creates note
+│
+▼
+Backend API (.NET)
+(validates + publishes message)
+│
+▼
+Azure Service Bus Queue
+│
+▼
+Worker Service (.NET)
+(processes AI summarization)
+│
+▼
+SignalR Hub
+(pushes real-time update)
+│
+▼
+Frontend updates instantly
+```
 ## Tech Stack
 
 ### Backend
