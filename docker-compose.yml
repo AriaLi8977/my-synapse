@@ -1,0 +1,30 @@
+services:
+  api:
+    build:
+      context: ./src/backend/Synapse.Api
+    image: synapse-api
+    container_name: synapse-api
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+
+  worker:
+    build:
+      context: ./src/backend/Synapse.Worker
+    image: synapse-worker
+    container_name: synapse-worker
+    env_file:
+      - .env
+    depends_on:
+      - api
+
+  frontend:
+    build:
+      context: ./src/frontend/synapse-web
+    image: synapse-frontend
+    container_name: synapse-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
