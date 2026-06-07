@@ -27,7 +27,7 @@ export function NoteCard({ note, onDelete }: Props) {
         }
     }
 
-    const statusInfo = statusMap[note.status] || {text: "Unknown", color: "bg-gray-100 text-gray-800"};
+    const statusInfo = statusMap[Number(note.status)] || {text: "Unknown", color: "bg-gray-100 text-gray-800"};
 
     
     return (

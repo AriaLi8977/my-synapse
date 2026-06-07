@@ -27,7 +27,12 @@ export function LoginPage( { onLogin }: Props){
             onLogin();
             navigate("/");
         }catch(error){
-            alert("Login failed: " + error.message);
+            if(error instanceof Error){
+                alert("Login failed: " + error.message);
+            }else{
+                alert("Login failed.")
+            }
+            
         }
     }
 

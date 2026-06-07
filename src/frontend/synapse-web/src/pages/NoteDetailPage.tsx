@@ -32,8 +32,6 @@ export function NoteDetailPage() {
         }
     }
 
-    const statusInfo = statusMap[note.status] || {text: "Unknown", color: "bg-gray-100 text-gray-800"};
-
     useEffect(()=>{
         async function loadNote(){
             try{
@@ -71,6 +69,8 @@ export function NoteDetailPage() {
           </div>
         );
       }
+
+      const statusInfo = statusMap[Number(note.status)] || {text: "Unknown", color: "bg-gray-100 text-gray-800"};
 
       const handleDelete = async () => {
         if (!note) return;

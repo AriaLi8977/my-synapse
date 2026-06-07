@@ -20,7 +20,12 @@ const navigate = useNavigate();
             onRegister();
             navigate("/");
         }catch(error){
-            alert("Registration failed: " + error.message);
+            if(error instanceof Error){
+                alert("Registration failed: " + error.message);
+            }else{
+                alert("Registration failed.");
+            }
+            
         }
     };
     return(
