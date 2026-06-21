@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Api", "Synapse.Api\Synapse.Api.csproj", "{86DAA847-FCD9-408B-94D8-9D574D84C06A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Api", "backend\Synapse.Api\Synapse.Api.csproj", "{86DAA847-FCD9-408B-94D8-9D574D84C06A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Application", "Synapse.Application\Synapse.Application.csproj", "{6E73E6EB-A5DA-4053-B9A2-209B23AEAB03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Application", "backend\Synapse.Application\Synapse.Application.csproj", "{6E73E6EB-A5DA-4053-B9A2-209B23AEAB03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Domain", "Synapse.Domain\Synapse.Domain.csproj", "{C449BB69-5353-4351-A7B9-2F3ECC246AD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Domain", "backend\Synapse.Domain\Synapse.Domain.csproj", "{C449BB69-5353-4351-A7B9-2F3ECC246AD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Infrastructure", "Synapse.Infrastructure\Synapse.Infrastructure.csproj", "{C09A8CFD-3509-4E18-88A3-25D2A451B283}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synapse.Infrastructure", "backend\Synapse.Infrastructure\Synapse.Infrastructure.csproj", "{C09A8CFD-3509-4E18-88A3-25D2A451B283}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{D374DB4B-3E07-4C00-98FC-F6F8313558D1}"
 EndProject

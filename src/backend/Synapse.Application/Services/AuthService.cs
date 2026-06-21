@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Synapse.Domain.Entities;
 using Synapse.Application.DTOs;
@@ -13,6 +14,8 @@ public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
     private readonly JwtSettings _jwtSettings;
+    private const int AccessTokenExpiryMinutes = 60; // 1 hour
+    private const int RefreshTokenExpiryDays = 7;
 
     public AuthService(IUserRepository userRepository, IOptions<JwtSettings> jwtOptions)
     {
@@ -36,6 +39,7 @@ public class AuthService : IAuthService
         {
             Id = Guid.NewGuid(),
             Email = dto.Email,
+            Name = dto.Name,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
         };
 
@@ -45,7 +49,7 @@ public class AuthService : IAuthService
         {
             Success = true,
             Code = "Registration Successful",
-            Token = GenerateJwt(user)
+            Token = GenerateAccessToken(user)
         };
     }
 
@@ -66,35 +70,129 @@ public class AuthService : IAuthService
         return new AuthResponseDto
         {
             Success = true,
-            Code = "Registration Successful",
-            Token = GenerateJwt(user)
+            Code = "Login Successful",
+            Token = GenerateAccessToken(user)
         };
     }
 
-    private string GenerateJwt(User user)
+    public async Task<OAuthResponseDto> HandleOAuthCallbackAsync(string provider, string providerId, string email, string name)
     {
+        var existingUser = await _userRepository.GetByEmailAsync(email);
+        
+        if (existingUser != null)
+        {
+            // Link OAuth to existing account if not already linked
+            if (string.IsNullOrEmpty(existingUser.OAuthProvider))
+            {
+                existingUser.OAuthProvider = provider;
+                existingUser.OAuthProviderId = providerId;
+                await _userRepository.UpdateAsync(existingUser);
+            }
+            
+            return new OAuthResponseDto
+            {
+                Success = true,
+                Code = "Login Successful",
+                Token = GenerateAccessToken(existingUser),
+                IsNewUser = false
+            };
+        }
+        
+        // Create new user
+        var newUser = new Domain.Entities.User
+        {
+            Id = Guid.NewGuid(),
+            Email = email,
+            Name = name,
+            OAuthProvider = provider,
+            OAuthProviderId = providerId,
+        };
 
-        var key = _jwtSettings.Key;
+        await _userRepository.AddAsync(newUser);
 
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+        return new OAuthResponseDto
+        {
+            Success = true,
+            Code = "Registration Successful",
+            Token = GenerateAccessToken(newUser),
+            IsNewUser = true
+        };
+    }
 
+    public async Task<TokenResponseDto> RefreshTokenAsync(string refreshToken)
+    {
+        var user = await _userRepository.GetByRefreshTokenAsync(refreshToken);
+        
+        if (user == null || user.RefreshTokenExpiry < DateTime.UtcNow)
+        {
+            return new TokenResponseDto
+            {
+                Success = false,
+                Code = "INVALID_TOKEN",
+                Message = "Invalid or expired refresh token"
+            };
+        }
+
+        var newAccessToken = GenerateAccessToken(user);
+        var newRefreshToken = GenerateRefreshToken();
+        
+        user.RefreshToken = newRefreshToken;
+        user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(RefreshTokenExpiryDays);
+        await _userRepository.UpdateAsync(user);
+
+        return new TokenResponseDto
+        {
+            Success = true,
+            Token = newAccessToken,
+            RefreshToken = newRefreshToken
+        };
+    }
+
+    private string GenerateAccessToken(User user)
+    {
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
         var creds = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()) //for siganlR claims
+            new Claim(JwtRegisteredClaimNames.Name, user.Name),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim("provider", user.OAuthProvider ?? "local")
         };
 
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.UtcNow.AddDays(7),
+            expires: DateTime.UtcNow.AddMinutes(AccessTokenExpiryMinutes),
             signingCredentials: creds
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
+    private string GenerateRefreshToken()
+    {
+        var randomBytes = new byte[64];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomBytes);
+        return Convert.ToBase64String(randomBytes);
+    }
 
+    public async Task<TokenResponseDto> GenerateTokensForUserAsync(User user)
+    {
+        var accessToken = GenerateAccessToken(user);
+        var refreshToken = GenerateRefreshToken();
+        
+        user.RefreshToken = refreshToken;
+        user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(RefreshTokenExpiryDays);
+        await _userRepository.UpdateAsync(user);
+
+        return new TokenResponseDto
+        {
+            Success = true,
+            Token = accessToken,
+            RefreshToken = refreshToken
+        };
+    }
 }
